@@ -6,18 +6,28 @@ from amazon_paapi import AmazonApi
 import asyncio
 import aiohttp
 import random
+import streamlit as st
 
+import streamlit as st
+from streamlit_autorefresh import st_autorefresh
+
+# TELEGRAM_BOT_TOKEN = st.secrets["TELEGRAM_BOT_TOKEN"]
+# TELEGRAM_CHANNEL_ID = st.secrets["TELEGRAM_CHANNEL_ID"]
+AMAZON_ACCESS_KEY = st.secrets["AMAZON_ACCESS_KEY"]
+AMAZON_SECRET_KEY = st.secrets["AMAZON_SECRET_KEY"]
+AMAZON_ASSOC_TAG = st.secrets["AMAZON_ASSOC_TAG"]
+# deals_url = "https://www.amazon.in/deals?language=en_IN&ref_=as_li_ss_tl"
 
 class AmazonTelegramDealsBot:
     def __init__(self, telegram_bot_token, telegram_channel_id):
         # Initialize Amazon PA API with much higher throttling
         self.amazon = AmazonApi(
-            "AKPAORP8DX1757347889",
-            "0zo+YXhJRPqkKO/YCfszbQ9Eo1Sk8hcRryMf22sa",
-            "akki22784-21",
+            AMAZON_ACCESS_KEY ,
+            AMAZON_SECRET_KEY ,
+            AMAZON_ASSOC_TAG,
             "IN",
             throttling=5  # Increased throttling to 5 seconds between requests
-        )
+)
 
         # Telegram settings
         self.bot_token = telegram_bot_token
@@ -319,16 +329,10 @@ class AmazonTelegramDealsBot:
             print(f"❌ Telegram connection failed: {e}")
             return False
 
-
-import streamlit as st
-
-import streamlit as st
-from streamlit_autorefresh import st_autorefresh
-
 def main():
-    TELEGRAM_BOT_TOKEN = "7564060655:AAHdYhMzCjHXwpkBOKTiKfdheLv1VJ0Dl2o"
-    TELEGRAM_CHANNEL_ID = "-1002364974498"
-    deals_url = "https://www.amazon.in/deals?&linkCode=ll2&tag=akki22784-21&linkId=18228e12a9a7910df4167034645eebaf&language=en_IN&ref_=as_li_ss_tl"
+    TELEGRAM_BOT_TOKEN = st.secrets["TELEGRAM_BOT_TOKEN"]
+    TELEGRAM_CHANNEL_ID = st.secrets["TELEGRAM_CHANNEL_ID"]
+    deals_url = "https://www.amazon.in/deals?language=en_IN&ref_=as_li_ss_tl"
 
     bot = AmazonTelegramDealsBot(TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID)
 
